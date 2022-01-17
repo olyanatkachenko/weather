@@ -1,53 +1,5 @@
-/*
-let weather = {
-    paris: {
-        temp: 19.7,
-        humidity: 80
-    },
-    tokyo: {
-        temp: 17.3,
-        humidity: 50
-    },
-    lisbon: {
-        temp: 30.2,
-        humidity: 20
-    },
-    "san francisco": {
-        temp: 20.9,
-        humidity: 100
-    },
-    moscow: {
-        temp: -5,
-        humidity: 20
-    }
-};
-
-let city = prompt("Enter a city");
-city = city.toLowerCase();
-if (weather[city] !== undefined) {
-    let temp = weather[city].temp;
-    let degree = Math.round(temp);
-    let humidity = weather[city].humidity;
-    let fahrenheit = Math.round((temp * 9) / 5 + 32);
-
-    alert(
-        `It is currently ${degree}°C (${fahrenheit}°F) in ${city} with a humidity of ${humidity}%`
-    );
-} else {
-    alert(
-        `Sorry, we don't know the weather for this city, try going to https://www.google.com/search?q=weather+${city}`
-    );
-}
-*/
-let temperature = 17
-let fahrenheitTemp = Math.round((temperature * 9) / 5 + 32);
-
 let temperatureButtonC = document.querySelector("#btnradio1")
 let temperatureButtonF = document.querySelector("#btnradio2")
-
-temperatureButtonC.addEventListener("click", updateTemperature)
-temperatureButtonF.addEventListener("click", updateTemperature)
-
 
 let now = new Date()
 let date = now.getDate()
@@ -79,24 +31,60 @@ function searchButtonChange(event) {
     updateWeather(searchInput.value)
 }
 
-function updateWeather(city) {
+function showTemperature(response) {
+    console.log(response)
+    let temperature = Math.round(response.data.main.temp);
+    let city = response.data.name
+
     let h1 = document.querySelector("#weather")
     h1.innerHTML = `Today in ${city} ${day} ${date} ${hours}:${minutes} ${month} ${year} `
-    updateTemperature()
-}
 
-function updateTemperature() {
     let span = document.querySelector("#temperatures")
     if (temperatureButtonC.checked) {
         span.innerHTML = `${temperature} °C`
     } else {
-        span.innerHTML = `${fahrenheitTemp} °F`
+        span.innerHTML = `${temperature} °F`
     }
 }
 
-let form = document.querySelector("#search-form")
-form.addEventListener("submit", searchButtonChange)
+function updateWeather(city) {
+    let units = "metric";
+    if (temperatureButtonF.checked) {
+        units="imperial"
+    }
+    let apiKey = "268beb25749e6f290fbbc1676ed3c56a";
+    let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
+    let apiUrl = `${apiEndpoint}?q=${city}&appid=${apiKey}&units=${units}`;
+
+    axios.get(apiUrl).then(showTemperature);
+}
+
+function showPosition(position) {
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude;
+    let units = "metric";
+    if (temperatureButtonF.checked) {
+        units="imperial"
+    }
+    let apiKey = "268beb25749e6f290fbbc1676ed3c56a";
+    let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
+    let apiUrl = `${apiEndpoint}?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
+
+    axios.get(apiUrl).then(showTemperature);
+}
+
+function currentFormSubmit(event) {
+    event.preventDefault()
+    navigator.geolocation.getCurrentPosition(showPosition);
+}
+
+let formCurrent = document.querySelector("#current-form")
+formCurrent.addEventListener("submit", currentFormSubmit)
+
+let formSearch = document.querySelector("#search-form")
+formSearch.addEventListener("submit", searchButtonChange)
 
 updateWeather("Kyiv")
+
 
 
