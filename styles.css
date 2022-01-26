@@ -7,11 +7,32 @@
 }
 
 h1 {
-    font-size: 400px;
     text-align: center;
     padding: 100px;
     color: #BFA0F9;
     font-weight: bold;
+}
+#weather{
+    font-size: 60px;
+}
+#temperatures{
+    font-size: 60px;
+}
+
+h2{
+    color: #BFA0F9;
+}
+p{
+    color: #BFA0F9;
+}
+
+.newColor{
+    color: #BFA0F9;
+    height: 2px;
+}
+
+.container{
+    color: #BFA0F9;
 }
 
 .info {
@@ -35,4 +56,7 @@ h1 {
 
 .container {
     text-align: center;
+}
+#navBar {
+    background-color: #424250 !important;
 }
