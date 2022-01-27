@@ -60,3 +60,24 @@ p{
 #navBar {
     background-color: #424250 !important;
 }
+
+#buttonLink{
+    border: 2px solid #BFA0F9;
+    color: #BFA0F9;
+    background: none;
+}
+
+#changeColorLink:link{
+    color: #BFA0F9;
+    font-style: italic ;
+
+}
+
+#changeColorLink:visited{
+    text-decoration: none;
+}
+
+#changeColorLink:hover{
+    text-decoration: none;
+
+}
