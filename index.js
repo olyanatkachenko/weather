@@ -9,6 +9,18 @@ let year = now.getFullYear()
 let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 let day = days[now.getDay()]
 
+let weatherIcons = {
+    "01d": "<i class=\"fas fa-sun\"></i>",
+    "02d": "<i class=\"fas fa-cloud-sun\"></i>",
+    "03d": "<i class=\"fas fa-cloud\"></i>",
+    "04d": "<i class=\"fas fa-cloud-meatball\"></i>",
+    "09d": "<i class=\"fas fa-cloud-showers-heavy\"></i>",
+    "10d": "<i class=\"fas fa-cloud-sun-rain\"></i>",
+    "11d": "<i class=\"fas fa-bolt\"></i>",
+    "13d": "<i class=\"far fa-snowflake\"></i>",
+    "50d": "<i class=\"fas fa-smog\"></i>",
+}
+
 let months = ["January",
     "February",
     "March",
@@ -36,21 +48,53 @@ function showTemperature(response) {
     let temperature = Math.round(response.data.main.temp);
     let city = response.data.name
 
-    let h1 = document.querySelector("#weather")
-    h1.innerHTML = `Today in ${city} ${day} ${date} ${hours}:${minutes} ${month} ${year} `
+    let iconName = response.data.weather[0].icon;
+    iconName = iconName.replace("n", "d")
+
+    let todayCitySpan = document.querySelector("#todayCity")
+    todayCitySpan.innerHTML = `Today in ${city}`
+
+    let dateSpan = document.querySelector("#date")
+    dateSpan.innerHTML = `${day} ${hours}:${minutes}, ${date} ${month} ${year} `
+
+    let iconImg = document.querySelector("#weatherIcon")
+    iconImg.innerHTML = weatherIcons[iconName]
 
     let span = document.querySelector("#temperatures")
+    span.innerHTML = `${temperature} ${units()}`
+    showDetails(response)
+}
+
+function units() {
     if (temperatureButtonC.checked) {
-        span.innerHTML = `${temperature} °C`
+        return "°C"
     } else {
-        span.innerHTML = `${temperature} °F`
+        return "°F"
     }
 }
+
+function unitsSpeed() {
+    if (temperatureButtonC.checked) {
+        return "km/h"
+    } else {
+        return "mph"
+    }
+}
+
+function showDetails(response) {
+    let description = response.data.weather[0].description;
+    let feels_like = response.data.main.feels_like;
+    let humidity= response.data.main.humidity;
+    let wind = response.data.wind.speed;
+    let detailsP = document.querySelector("#generalInfo")
+    detailsP.innerHTML = `Generally ${description}. Temps feel like ${feels_like} ${units()}. Wind speed is ${wind} ${unitsSpeed()}. ${humidity}% relative humidity.`
+}
+
 
 function updateWeather(city) {
     let units = "metric";
     if (temperatureButtonF.checked) {
-        units="imperial"
+        units = "imperial"
     }
     let apiKey = "268beb25749e6f290fbbc1676ed3c56a";
     let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
@@ -64,7 +108,7 @@ function showPosition(position) {
     let longitude = position.coords.longitude;
     let units = "metric";
     if (temperatureButtonF.checked) {
-        units="imperial"
+        units = "imperial"
     }
     let apiKey = "268beb25749e6f290fbbc1676ed3c56a";
     let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";

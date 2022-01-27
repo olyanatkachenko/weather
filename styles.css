@@ -8,15 +8,19 @@
 
 h1 {
     text-align: center;
-    padding: 100px;
+    padding: 80px;
     color: #BFA0F9;
     font-weight: bold;
 }
 #weather{
     font-size: 60px;
 }
-#temperatures{
+#temperatures, #weatherIcon {
     font-size: 60px;
+}
+
+#date{
+    font-size: 18px;
 }
 
 h2{
@@ -54,20 +58,11 @@ p{
     padding: 0;
 }
 
-.container {
-    text-align: center;
-}
 #navBar {
     background-color: #424250 !important;
 }
 
-#buttonLink{
-    border: 2px solid #BFA0F9;
-    color: #BFA0F9;
-    background: none;
-}
-
-#changeColorLink:link{
+#changeColorLink{
     color: #BFA0F9;
     font-style: italic ;
 
@@ -75,9 +70,59 @@ p{
 
 #changeColorLink:visited{
     text-decoration: none;
+    color: #BFA0F9;
 }
 
 #changeColorLink:hover{
     text-decoration: none;
 
 }
+#current-form{
+    margin-left: 40px;
+}
+
+.btn-outline-success {
+    color: #BFA0F9 ;
+    border-color: #BFA0F9;
+
+    box-shadow: none !important;
+}
+
+.btn-outline-success:hover {
+    background-color: #BFA0F9;
+    border-color: #BFA0F9;
+    color: #424250;
+}
+
+.btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active {
+    color:#424250 ;
+    background-color: #BFA0F9;
+    border-color: #BFA0F9;
+}
+
+.btn-outline-primary {
+    color: #BFA0F9;
+    border-color:#BFA0F9;
+    box-shadow: none !important;
+}
+
+.btn-outline-primary:hover {
+    color: #424250;
+    border-color:#BFA0F9;
+    background-color: #BFA0F9;
+}
+
+.searchGroup{
+    display: flex;
+}
+
+.container {
+    text-align: left;
+}
+
+.row {
+    --bs-gutter-x: 1rem;
+}
+
+
+
