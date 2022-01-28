@@ -124,5 +124,14 @@ p{
     --bs-gutter-x: 1rem;
 }
 
+.form-control,
+.form-control:hover,
+.form-control:focus {
+    background-color: #424250;
+    border-color: #BFA0F9;
+    border: 2px solid #BFA0F9;
+    color: #BFA0F9;
+    box-shadow: none !important;
+}
 
 
