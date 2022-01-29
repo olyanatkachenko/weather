@@ -84,7 +84,7 @@ function unitsSpeed() {
 function showDetails(response) {
     let description = response.data.weather[0].description;
     let feels_like = response.data.main.feels_like;
-    let humidity= response.data.main.humidity;
+    let humidity = response.data.main.humidity;
     let wind = response.data.wind.speed;
     let detailsP = document.querySelector("#generalInfo")
     detailsP.innerHTML = `Generally ${description}. Temps feel like ${feels_like} ${units()}. Wind speed is ${wind} ${unitsSpeed()}. ${humidity}% relative humidity.`
@@ -100,6 +100,8 @@ function updateWeather(city) {
     let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
     let apiUrl = `${apiEndpoint}?q=${city}&appid=${apiKey}&units=${units}`;
 
+    lastCity = city
+
     axios.get(apiUrl).then(showTemperature);
 }
 
@@ -114,6 +116,8 @@ function showPosition(position) {
     let apiEndpoint = "https://api.openweathermap.org/data/2.5/weather";
     let apiUrl = `${apiEndpoint}?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
 
+    lastCity = null
+
     axios.get(apiUrl).then(showTemperature);
 }
 
@@ -122,13 +126,29 @@ function currentFormSubmit(event) {
     navigator.geolocation.getCurrentPosition(showPosition);
 }
 
+function unitsChange() {
+    if (lastCity) {
+        updateWeather(lastCity)
+    }else {
+        navigator.geolocation.getCurrentPosition(showPosition)
+    }
+}
+
+let lastCity = "Kyiv"
+
 let formCurrent = document.querySelector("#current-form")
 formCurrent.addEventListener("submit", currentFormSubmit)
 
 let formSearch = document.querySelector("#search-form")
 formSearch.addEventListener("submit", searchButtonChange)
 
-updateWeather("Kyiv")
+let cButton = document.querySelector("#btnradio1")
+cButton.addEventListener("click", unitsChange)
+
+let fButton = document.querySelector("#btnradio2")
+fButton.addEventListener("click", unitsChange)
+
+updateWeather(lastCity)
 
 
 
