@@ -65,6 +65,31 @@ function showTemperature(response) {
     showDetails(response)
 }
 
+function displayForecast() {
+    let forecastElement = document.querySelector("#forecast")
+
+    forecastElement.innerHTML = `
+    <div className = "weather-forecast-right" id = "forecast" >
+        <h2> Forecast </h2>
+    <hr className="newColor">
+        <div className="container">
+            <div className="row">
+                <div className="col-">Mon</div>
+                <img
+                    src="https://cdn.iconscout.com/icon/free/png-256/weather-2191838-1846632.png"
+                    alt=""
+                    width="32px"
+                />
+                <div className="weather-forecast-temperatures">
+                    <span className="weather-forecast-temperature-max"> 18° </span>
+                    <span className="weather-forecast-temperature-min"> 12° </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+}
+
 function units() {
     if (temperatureButtonC.checked) {
         return "°C"
@@ -118,6 +143,7 @@ function showPosition(position) {
 
     lastCity = null
 
+
     axios.get(apiUrl).then(showTemperature);
 }
 
@@ -149,6 +175,8 @@ let fButton = document.querySelector("#btnradio2")
 fButton.addEventListener("click", unitsChange)
 
 updateWeather(lastCity)
+
+displayForecast();
 
 
 

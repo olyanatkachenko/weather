@@ -49,14 +49,11 @@ p{
     width: 40%;
 }
 
-.right {
+.weather-forecast-right {
     width: 40%;
 
 }
 
-.right .container {
-    padding: 0;
-}
 
 #navBar {
     background-color: #424250 !important;
@@ -120,9 +117,7 @@ p{
     text-align: left;
 }
 
-.row {
-    --bs-gutter-x: 1rem;
-}
+
 
 .form-control,
 .form-control:hover,
@@ -135,3 +130,11 @@ p{
 }
 
 
+.weather-forecast-right{
+    margin-top: 30px;
+    color: #BFA0F9;
+}
+
+.weather-forcast-temp-min{
+    opacity: 0.5;
+}
