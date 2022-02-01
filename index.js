@@ -35,6 +35,14 @@ let months = ["January",
     "December"]
 let month = months[now.getMonth()]
 
+function formatDay(timestamp) {
+    let date = new Date(timestamp * 1000)
+    let day = date.getDay()
+    let days = ["San", "Mon", " Tue", "Wed", "Thu", "Fri", "Sat"]
+
+    return days [day]
+}
+
 // Called on button click
 function searchButtonChange(event) {
     event.preventDefault()
@@ -63,44 +71,64 @@ function showTemperature(response) {
     let span = document.querySelector("#temperatures")
     span.innerHTML = `${temperature} ${units()}`
     showDetails(response)
+
+    getForecast(response.data.coord)
 }
 
 
-function displayForecast() {
+function displayForecast(response) {
+    console.log(response.data.daily)
+    let forecast = response.data.daily;
     let forecastElement = document.querySelector("#forecast")
-
     let days = ["Thu", "Fri", "Sat", "Sun"];
 
-    let forecastHTML = `<div class="row">`;
+    
 
-    days.forEach(function (day) {
+    let forecastHTML = `
+            <h2> Forecast </h2>
+            <hr className="newColor">
+    
+            <div class="row">`;
 
-        forecastHTML = forecastHTML + `
+    forecast.forEach(function (forecastDay, index) {
+        if (index < 6) {
+            forecastHTML = forecastHTML + `
 
                             <div class="col-2">
-                            <div class="weather-forecast-date">${day}</div>
-                            <img
-                                src="https://cdn.iconscout.com/icon/free/png-256/weather-2191838-1846632.png"
-                                alt=""
-                                width="32px"
-                            />
+                            <div class="weather-forecast-date">${formatDay(forecastDay.dt)}</div>
+                          
+                         
+                            weatherIcons[forecastDay.weather.icon]
+                           
+
+
+                                             
+                                             
                             <div class="weather-forecast-temperatures">
-                                <span class="weather-forecast-temperature-max"> 18° </span>
-                                <span class="weather-forecast-temperature-min"> 12° </span>
+                                <span class="weather-forecast-temperature-max"> ${Math.round(forecastDay.temp.max)}° </span>
+                                <span class="weather-forecast-temperature-min"> ${Math.round(forecastDay.temp.min)}° </span>
                             </div>
                     </div>
           
     `;
-
+        }
 
     })
 
-    forecastHTML = forecastHTML + `</div>`;
-
+    forecastHTML = forecastHTML + `
+        </div>
+        `;
     forecastElement.innerHTML = forecastHTML;
 
 }
 
+function getForecast(coordinates) {
+    console.log(coordinates)
+    let apiKey = "268beb25749e6f290fbbc1676ed3c56a";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&unit=metric`;
+    console.log(apiUrl)
+    axios.get(apiUrl).then(displayForecast)
+}
 
 function units() {
     if (temperatureButtonC.checked) {
@@ -125,6 +153,8 @@ function showDetails(response) {
     let wind = response.data.wind.speed;
     let detailsP = document.querySelector("#generalInfo")
     detailsP.innerHTML = `Generally ${description}. Temps feel like ${feels_like} ${units()}. Wind speed is ${wind} ${unitsSpeed()}. ${humidity}% relative humidity.`
+
+
 }
 
 
@@ -140,6 +170,7 @@ function updateWeather(city) {
     lastCity = city
 
     axios.get(apiUrl).then(showTemperature);
+
 }
 
 function showPosition(position) {
@@ -187,7 +218,7 @@ let fButton = document.querySelector("#btnradio2")
 fButton.addEventListener("click", unitsChange)
 
 updateWeather(lastCity)
-displayForecast();
+
 
 
 
