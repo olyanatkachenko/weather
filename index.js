@@ -82,7 +82,8 @@ function displayForecast(response) {
     let forecastElement = document.querySelector("#forecast")
     let days = ["Thu", "Fri", "Sat", "Sun"];
 
-    
+
+
 
     let forecastHTML = `
             <h2> Forecast </h2>
@@ -91,18 +92,15 @@ function displayForecast(response) {
             <div class="row">`;
 
     forecast.forEach(function (forecastDay, index) {
+        console.log(forecastDay)
         if (index < 6) {
+            let iconName = forecastDay.weather[0].icon;
+            iconName = iconName.replace("n", "d")
             forecastHTML = forecastHTML + `
 
                             <div class="col-2">
                             <div class="weather-forecast-date">${formatDay(forecastDay.dt)}</div>
-                          
-                         
-                            weatherIcons[forecastDay.weather.icon]
-                           
-
-
-                                             
+                            ${weatherIcons[iconName]}
                                              
                             <div class="weather-forecast-temperatures">
                                 <span class="weather-forecast-temperature-max"> ${Math.round(forecastDay.temp.max)}° </span>
@@ -124,8 +122,14 @@ function displayForecast(response) {
 
 function getForecast(coordinates) {
     console.log(coordinates)
+
+    let units = "metric";
+    if (temperatureButtonF.checked) {
+        units = "imperial"
+    }
+
     let apiKey = "268beb25749e6f290fbbc1676ed3c56a";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&unit=metric`;
+    let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=${units}`;
     console.log(apiUrl)
     axios.get(apiUrl).then(displayForecast)
 }
